@@ -1,63 +1,51 @@
-using Microsoft.EntityFrameworkCore;
 using DataAccess.Data;
-using Models;
-using Microsoft.AspNetCore.SignalR;
+using DataAccess.Repository;
+using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using DataAccess.Repository.IRepository;
-using DataAccess.Repository;
+using Microsoft.EntityFrameworkCore;
+using Models;
 using Stripe;
 using Utility;
-using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-builder.Services.AddScoped<IAppointmentToothRepository, AppointmentToothRepository>();
-builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-builder.Services.AddScoped<IAppointmentTreatmentRepository, AppointmentTreatmentRepository>();
-builder.Services.AddScoped<IAttachmentRepository, AttachmentRepository>();
-builder.Services.AddScoped<IClinicRepository, ClinicRepository>();
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
-builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
-builder.Services.AddScoped<IPatientRepository, PatientRepository>();
-builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
-builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
-builder.Services.AddScoped<IToothRepository, ToothRepository>();
-builder.Services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
-builder.Services.AddScoped<IPrescriptionItemRepository, PrescriptionItemRepository>();
-builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-builder.Services.AddScoped<IDoctorScheduleRepository, DoctorScheduleRepository>();
-
-builder.Services.AddDbContext<ApplicationDbContext>(option =>
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-{
-    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-});
-
 builder.Services.AddRazorPages();
-builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = false;
+
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    });
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.Configure<StripeSettings>(
+    builder.Configuration.GetSection("Stripe"));
+
+StripeConfiguration.ApiKey =
+    builder.Configuration["Stripe:SecretKey"];
 
 builder.Services.AddSignalR();
 
-// Add CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -68,20 +56,35 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAppointmentToothRepository, AppointmentToothRepository>();
+builder.Services.AddScoped<IAppointmentTreatmentRepository, AppointmentTreatmentRepository>();
+builder.Services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+builder.Services.AddScoped<IClinicRepository, ClinicRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IDoctorScheduleRepository, DoctorScheduleRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
+builder.Services.AddScoped<IPrescriptionItemRepository, PrescriptionItemRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IToothRepository, ToothRepository>();
+builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+
 var app = builder.Build();
 
-// Role Seeding
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-//    await SeedRolesAsync(roleManager);
-//}
+using (var scope = app.Services.CreateScope())
+{
+    await DbInitializer.SeedAsync(scope.ServiceProvider);
+}
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // For detailed error messages in development
+    app.UseDeveloperExceptionPage();
 }
 else
 {
@@ -90,16 +93,17 @@ else
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
-// Enable WebSockets and CORS
-app.UseCors("AllowAll");
 app.UseRouting();
 
+app.UseCors("AllowAll");
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
-// Define route patterns
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
@@ -108,5 +112,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapRazorPages();
+
 app.Run();
-        

@@ -1,0 +1,81 @@
+﻿@page
+@model LoginWithRecoveryCodeModel
+@{
+    ViewData["Title"] = "Recovery code verification";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #fdfcf9;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .auth-box {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 480px;
+        width: 100%;
+    }
+
+        .auth-box h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .auth-box p {
+            color: #666;
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+        }
+
+    .btn-sika-blue {
+        background-color: #2980b9;
+        border-color: #2980b9;
+        font-weight: bold;
+        border-radius: 8px;
+        color: #fff;
+        transition: 0.3s ease;
+    }
+
+        .btn-sika-blue:hover {
+            background-color: #21618c;
+            border-color: #21618c;
+        }
+
+    .form-control {
+        border-radius: 8px;
+    }
+</style>
+
+<div class="auth-box">
+    <h1>@ViewData["Title"]</h1>
+    <p>
+        You have requested to log in with a recovery code.<br />
+        This login will not be remembered until you provide an authenticator app code
+        or disable 2FA.
+    </p>
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.RecoveryCode" class="form-control" autocomplete="off" placeholder="RecoveryCode" />
+            <label asp-for="Input.RecoveryCode" class="form-label">Recovery Code</label>
+            <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="w-100 btn btn-lg btn-sika-blue">Log in</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

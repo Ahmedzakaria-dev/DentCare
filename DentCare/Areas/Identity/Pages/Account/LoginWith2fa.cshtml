@@ -1,0 +1,99 @@
+﻿@page
+@model LoginWith2faModel
+@{
+    ViewData["Title"] = "Two-factor authentication";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #fdfcf9;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .auth-box {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 480px;
+        width: 100%;
+    }
+
+        .auth-box h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .auth-box p {
+            color: #666;
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+        }
+
+    .btn-sika-blue {
+        background-color: #2980b9;
+        border-color: #2980b9;
+        font-weight: bold;
+        border-radius: 8px;
+        color: #fff;
+        transition: 0.3s ease;
+    }
+
+        .btn-sika-blue:hover {
+            background-color: #21618c;
+            border-color: #21618c;
+        }
+
+    .form-control {
+        border-radius: 8px;
+    }
+
+    a {
+        color: #2980b9;
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="auth-box">
+    <h1>@ViewData["Title"]</h1>
+    <p>Your login is protected with an authenticator app.<br />Enter your authenticator code below.</p>
+
+    <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+        <input asp-for="RememberMe" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" placeholder="123456" />
+            <label asp-for="Input.TwoFactorCode" class="form-label">Authentication Code</label>
+            <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
+        </div>
+
+        <div class="checkbox mb-3 text-start">
+            <label asp-for="Input.RememberMachine" class="form-label">
+                <input asp-for="Input.RememberMachine" />
+                @Html.DisplayNameFor(m => m.Input.RememberMachine)
+            </label>
+        </div>
+
+        <button type="submit" class="w-100 btn btn-lg btn-sika-blue">Log in</button>
+    </form>
+
+    <p class="mt-3">
+        Don't have access to your authenticator device?<br />
+        <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">Log in with a recovery code</a>.
+    </p>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

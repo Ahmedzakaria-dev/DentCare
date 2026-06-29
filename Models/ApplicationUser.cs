@@ -21,8 +21,8 @@ namespace Models
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public int ClinicId { get; set; }
-        public Clinic Clinic { get; set; }
+        public int? ClinicId { get; set; }
+        public Clinic? Clinic { get; set; }
 
         public Doctor? Doctor { get; set; }
 

@@ -1,0 +1,14 @@
+﻿@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    var isError = Model.StartsWith("Error");
+    var alertClass = isError ? "alert-danger" : "alert-success";
+    var iconClass = isError ? "bi bi-x-circle-fill" : "bi bi-check-circle-fill";
+
+    <div class="alert @alertClass alert-dismissible d-flex align-items-center gap-2 fade show" role="alert">
+        <i class="@iconClass fs-5"></i>
+        <div>@Model</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}

@@ -1,0 +1,77 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<form id="profile-form" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <!-- Profile Details -->
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control bg-dark text-white border-secondary" disabled />
+                <label asp-for="Username" class="text-white"></label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FullName" class="form-control bg-dark text-white border-secondary" />
+                <label asp-for="Input.FullName" class="text-white"></label>
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control bg-dark text-white border-secondary" />
+                <label asp-for="Input.PhoneNumber" class="text-white"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Address" class="form-control bg-dark text-white border-secondary" />
+                <label asp-for="Input.Address" class="text-white"></label>
+                <span asp-validation-for="Input.Address" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="w-100 btn btn-lg btn-primary shadow-sm">Save Changes</button>
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="col-md-6 text-center">
+            <label asp-for="Input.ProfilePicture" class="form-label fw-bold mb-2 d-block text-white">Profile Picture</label>
+
+            <img id="profilePicture" alt="Profile Picture" class="rounded-circle img-thumbnail mb-3"
+                 style="width: 150px; height: 150px; object-fit: cover;"
+                 src="@(Model.Input.ProfilePicture != null && Model.Input.ProfilePicture.Length > 0
+                     ? $"data:image/*;base64,{Convert.ToBase64String(Model.Input.ProfilePicture)}"
+                     : "/images/default-profile.png")" />
+
+            <input type="file" accept="image/*" asp-for="Input.ProfilePicture" class="form-control mb-2 bg-dark text-white border-secondary" id="profilePictureInput" />
+            <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('profilePictureInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('profilePicture');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "/images/default-profile.png";
+            }
+        });
+    </script>
+}

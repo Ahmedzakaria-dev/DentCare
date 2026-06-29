@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="glass-card mt-4 col-lg-8 mx-auto">
+    <h2 class="glass-title text-center"><i class="bi bi-envelope-at me-2"></i>Get In Touch</h2>
+    <p class="text-muted small text-center mb-4">Have questions regarding branch subscriptions or system capabilities? Reach out instantly.</p>
+
+    <div class="row g-4 mt-2">
+        <div class="col-md-5">
+            <h5 class="text-info mb-3"><i class="bi bi-geo-alt-fill me-2"></i>Headquarters</h5>
+            <p class="text-muted small mb-2">DentCare Corporate Network, Cairo, Egypt.</p>
+            
+            <h5 class="text-info mb-3 mt-4"><i class="bi bi-telephone-inbound-fill me-2"></i>Hotlines</h5>
+            <p class="text-muted small mb-1">+20 2 1234567</p>
+            <p class="text-muted small mb-0">support@@dentcare.com</p>
+        </div>
+
+        <div class="col-md-7">
+            <form onsubmit="event.preventDefault(); alert('Message simulation sent successfully!');" class="row g-3">
+                <div class="col-12">
+                    <input type="text" class="form-control glass-input" placeholder="Your Name" required />
+                </div>
+                <div class="col-12">
+                    <input type="email" class="form-control glass-input" placeholder="Your Email Address" required />
+                </div>
+                <div class="col-12">
+                    <textarea class="form-control" rows="4" style="background-color: rgba(3, 10, 16, 0.85); border: 1px solid rgba(0, 229, 255, 0.35); color: #fff;" placeholder="Type your message here..." required></textarea>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-neon-cyan px-4 py-2 w-100">Submit Message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

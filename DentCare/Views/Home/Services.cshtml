@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Models.Treatment>
+@{
+    ViewData["Title"] = "Our Dental Services";
+}
+
+<div class="glass-card mt-4">
+    <div class="text-center mb-5">
+        <h2 class="glass-title mb-1"><i class="bi bi-heart-pulse me-2"></i>Dental Operations & Treatments</h2>
+        <p class="text-muted small">Transparent Pricing for Advanced Medical Care.</p>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var svc in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="p-4 rounded h-100 d-flex flex-column justify-content-between" style="background: rgba(3, 10, 16, 0.6); border-left: 4px solid #00e5ff; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        <div>
+                            <h4 class="text-white font-weight-bold mb-2">@svc.Name</h4>
+                            <p class="text-muted small mb-3" style="line-height: 1.6;">@svc.Description</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="text-info font-weight-bold" style="font-size: 1.2rem;">@($"{svc.Price:N2} EGP")</span>
+                            <i class="bi bi-shield-check text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted py-5">No clinical treatment packages listed in the system yet.</p>
+    }
+</div>

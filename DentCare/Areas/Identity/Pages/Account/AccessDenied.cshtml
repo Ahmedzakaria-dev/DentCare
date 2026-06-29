@@ -1,0 +1,68 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #fdfcf9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .access-denied-container {
+        text-align: center;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 90%;
+    }
+
+    .access-denied-icon {
+        font-size: 60px;
+        color: #e74c3c;
+        margin-bottom: 15px;
+    }
+
+    .access-denied-container h1 {
+        color: #e74c3c;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+
+    .access-denied-container p {
+        color: #555;
+        font-size: 1.1rem;
+    }
+
+    .btn-home {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 8px;
+        border: none;
+        background-color: #3498db;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s;
+    }
+
+        .btn-home:hover {
+            background-color: #2980b9;
+        }
+</style>
+
+<div class="access-denied-container">
+    <div class="access-denied-icon">🔒</div>
+    <h1>@ViewData["Title"]</h1>
+    <p>You do not have access to this resource.</p>
+    <a href="/" class="btn-home">Back to Home</a>
+</div>

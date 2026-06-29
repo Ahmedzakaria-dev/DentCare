@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Models.Doctor>
+@{
+    ViewData["Title"] = "Our Specialists";
+}
+
+<div class="glass-card mt-4">
+    <div class="text-center mb-5">
+        <h2 class="glass-title mb-1"><i class="bi bi-person-badge me-2"></i>Meet Our Medical Specialists</h2>
+        <p class="text-muted small">Professional dental care experts dedicated to your perfect smile.</p>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var doc in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4 text-center" style="background: rgba(3, 10, 16, 0.6); border: 1px solid rgba(0, 229, 255, 0.15); border-radius: 12px;">
+                        <div class="mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: rgba(255,255,255,0.03); border-radius: 50%; border: 1px solid rgba(0,229,255,0.2);">
+                            <i class="bi bi-person-fill text-info style="font-size: 2.5rem;"></i>
+                        </div>
+                        <h4 class="text-white font-weight-bold mb-1">Dr. @(doc.User?.FullName ?? "Unknown Doctor")</h4>
+                        <span class="badge mb-3" style="background: rgba(0, 240, 255, 0.1); color: #00f0ff; border: 1px solid rgba(0,240,255,0.2);">@doc.Specialization</span>
+                        
+                        <div class="text-start bg-transparent p-2 rounded mb-3 small" style="background: rgba(0,0,0,0.2) !important;">
+                            <p class="text-muted mb-1"><i class="bi bi-building me-2 text-info"></i>Department: @(doc.Department?.Name ?? "General")</p>
+                            <p class="text-muted mb-1"><i class="bi bi-award me-2 text-info"></i>Experience: @doc.ExperienceYears Years</p>
+                            <p class="text-muted mb-0"><i class="bi bi-cash-stack me-2 text-info"></i>Fees: @($"{doc.ConsultationFee:N2} EGP")</p>
+                        </div>
+                        
+                        <p class="text-muted small text-start italic">@(doc.Bio ?? "No additional biography shared by the specialist.")</p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted py-5">No specialist medical staff registered at the moment.</p>
+    }
+</div>

@@ -1,0 +1,87 @@
+﻿@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #fefefe;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .error-container {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 600px;
+        width: 100%;
+    }
+
+        .error-container h1 {
+            color: #e74c3c;
+            font-size: 2.5rem;
+        }
+
+        .error-container h2 {
+            color: #c0392b;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .error-container p, code {
+            font-size: 1rem;
+            color: #555;
+        }
+
+    .dev-note {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #2980b9;
+        margin-top: 30px;
+        text-align: left;
+        border-radius: 6px;
+    }
+
+        .dev-note h3 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+    code {
+        background-color: #eee;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: monospace;
+    }
+</style>
+
+<div class="error-container">
+    <h1>Error</h1>
+    <h2>An error occurred while processing your request.</h2>
+
+    @if (Model.ShowRequestId)
+    {
+        <p><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+    }
+
+    <div class="dev-note">
+        <h3>Development Mode</h3>
+        <p>
+            Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+        </p>
+        <p>
+            <strong>Do not enable Development environment in production</strong>, as it may expose sensitive information.
+        </p>
+        <p>
+            To enable development mode locally, set the <code>ASPNETCORE_ENVIRONMENT</code> environment variable to <code>Development</code> and restart the application.
+        </p>
+    </div>
+</div>

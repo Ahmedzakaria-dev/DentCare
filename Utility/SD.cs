@@ -5,8 +5,8 @@ namespace Utility
     public class SD
     {
         public const string Admin = "Admin";
-        public const string Customer = "Customer";
-        public const string Company = "Company";
+        public const string Doctor = "Doctor";
+        public const string Patient = "Patient";
         public const string AdminEmail = "Ahmedzakria998@gmail.com";
     }
 }

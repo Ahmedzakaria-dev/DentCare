@@ -1,8 +1,169 @@
-﻿@{
+﻿@using Utility
+@{
     ViewData["Title"] = "Home Page";
+    var topDoctors = ViewBag.TopDoctors as IEnumerable<Models.Doctor> ?? new List<Models.Doctor>();
+    var latestReviews = ViewBag.LatestReviews as IEnumerable<Models.Review> ?? new List<Models.Review>();
+    var popularClinics = ViewBag.PopularClinics as IEnumerable<Models.Clinic> ?? new List<Models.Clinic>();
+    var services = ViewBag.Services as IEnumerable<Models.Treatment> ?? new List<Models.Treatment>();
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="glass-card text-center my-4 py-5">
+    <h1 class="display-4 font-weight-bold" style="color: #ffffff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.8), 0 2px 5px rgba(0,0,0,0.9);">Welcome to DentCare</h1>
+    <p class="lead text-muted">Next-generation dental clinic systems network management.</p>
+    <div class="mt-4">
+        @if (User.Identity!.IsAuthenticated)
+        {
+            <a asp-controller="Appointment" asp-action="Create" class="btn btn-neon-cyan px-5 py-3 font-weight-bold" style="font-size: 1.1rem;">
+                <i class="bi bi-calendar-plus me-2"></i>Book an Appointment Now
+            </a>
+        }
+        else
+        {
+            <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="~/Appointment/Create" class="btn btn-neon-cyan px-5 py-3 font-weight-bold" style="font-size: 1.1rem;">
+                <i class="bi bi-calendar-plus me-2"></i>Login To Book
+            </a>
+        }
+    </div>
+</div>
+
+<div class="row g-3 my-4 text-center">
+    <div class="col-md-3">
+        <div class="p-3 rounded">
+            <h2 class="mb-0">@ViewBag.ClinicsCount</h2>
+            <small>Clinics</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="p-3 rounded">
+            <h2 class="mb-0">@ViewBag.DoctorsCount</h2>
+            <small>Doctors</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="p-3 rounded">
+            <h2 class="mb-0">@ViewBag.DepartmentsCount</h2>
+            <small>Departments</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="p-3 rounded">
+            <h2 class="mb-0">@ViewBag.TreatmentsCount</h2>
+            <small>Services Available</small>
+        </div>
+    </div>
+</div>
+
+<div class="glass-card my-5">
+    <h3 class="glass-title text-center mb-4"><i class="bi bi-star-fill me-2"></i>Popular Clinics</h3>
+    @if (popularClinics.Any())
+    {
+        <div class="row g-4">
+            @foreach (var clinic in popularClinics)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 p-3 text-center" style="background: rgba(3, 10, 16, 0.5); border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="mb-2 mx-auto d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; border: 1px solid #00e5ff; background: rgba(255,255,255,0.02);">
+                            @if (!string.IsNullOrEmpty(clinic.Logo))
+                            {
+                                <img src="~/images/clinics/@clinic.Logo" alt="@clinic.Name" asp-append-version="true" style="width:100%; height:100%; object-fit:cover;" />
+                            }
+                            else
+                            {
+                                <i class="bi bi-building-fill text-muted fs-2"></i>
+                            }
+                        </div>
+                        <h5 class="text-white font-weight-bold">@clinic.Name</h5>
+                        <p class="text-muted small mb-0"><i class="bi bi-geo-alt me-1"></i>@clinic.Address</p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted py-3 mb-0">No popular clinics tracked at the moment.</p>
+    }
+</div>
+
+<div class="glass-card my-5">
+    <h3 class="glass-title text-center mb-4"><i class="bi bi-heart-pulse-fill me-2"></i>Our Medical Treatments</h3>
+    @if (services.Any())
+    {
+        <div class="row g-4">
+            @foreach (var svc in services)
+            {
+                <div class="col-md-4">
+                    <div class="p-3 rounded h-100 d-flex flex-column justify-content-between" style="background: rgba(3, 10, 16, 0.5); border-left: 4px solid #00e5ff;">
+                        <div>
+                            <h5 class="text-white font-weight-bold mb-1">@svc.Name</h5>
+                            <p class="text-muted small mb-2">@svc.Description</p>
+                        </div>
+                        <span class="text-info font-weight-bold mt-2">@($"{svc.Price:N2} EGP")</span>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted py-3 mb-0">No medical services listed yet.</p>
+    }
+</div>
+
+<div class="glass-card my-5">
+    <h3 class="glass-title text-center mb-4"><i class="bi bi-person-badge-fill me-2"></i>Top Rated Specialists</h3>
+    @if (topDoctors.Any())
+    {
+        <div class="row g-4">
+            @foreach (var doc in topDoctors)
+            {
+                <div class="col-md-4 text-center">
+                    <div class="card h-100 p-4" style="background: rgba(3, 10, 16, 0.5); border: 1px solid rgba(0, 229, 255, 0.15);">
+                        <h5 class="text-white font-weight-bold mb-0">Dr. @(doc.User?.FullName ?? "Unknown Doctor")</h5>
+                        <small class="text-info d-block mb-2">@doc.Specialization</small>
+                        <p class="text-muted small mb-0">Exp: @doc.ExperienceYears Years</p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted py-3 mb-0">No specialist records found.</p>
+    }
+</div>
+
+<div class="glass-card my-5">
+    <h3 class="glass-title text-center mb-4"><i class="bi bi-chat-square-quote-fill me-2"></i>Latest Patient Reviews</h3>
+    @if (latestReviews.Any())
+    {
+        <div class="row g-4">
+            @foreach (var rev in latestReviews)
+            {
+                <div class="col-md-4">
+                    <div class="p-3 rounded h-100" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="mb-2">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= rev.Rating)
+                                {
+                                    <i class="bi bi-star-fill text-warning small"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-star text-secondary small"></i>
+                                }
+                            }
+                        </div>
+                        <p class="text-light small italic mb-2">"@rev.Comment"</p>
+                        <small class="text-muted d-block text-end">- @(rev.Patient?.User?.FullName ?? "Anonymous")</small>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted py-3 mb-0">No patient reviews submitted yet.</p>
+    }
 </div>

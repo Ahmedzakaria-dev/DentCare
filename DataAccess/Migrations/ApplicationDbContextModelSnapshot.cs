@@ -167,7 +167,7 @@ namespace DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("ClinicId")
+                    b.Property<int?>("ClinicId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -944,8 +944,7 @@ namespace DataAccess.Migrations
                     b.HasOne("Models.Clinic", "Clinic")
                         .WithMany("Users")
                         .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Clinic");
                 });

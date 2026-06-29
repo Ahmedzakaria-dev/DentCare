@@ -1,0 +1,32 @@
+﻿@page
+@model DownloadPersonalDataModel
+@{
+    ViewData["Title"] = "Download Your Data";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<div class="alert alert-info border-start border-4 border-info-subtle shadow-sm">
+    <p class="mb-1">
+        You can request a download of all your personal data stored in our system.
+    </p>
+    <p class="mb-0">
+        This data will be provided in a machine-readable JSON format.
+    </p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6 col-lg-5">
+        <form method="post" class="card shadow-sm p-4 rounded-4 border border-info-subtle bg-body-tertiary">
+            <p class="text-muted mb-4">Click the button below to generate and download your data.</p>
+            <button type="submit" class="btn btn-info w-100 fw-bold rounded-pill shadow-sm">
+                <i class="bi bi-download me-2"></i> Download My Data
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

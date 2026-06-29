@@ -1,0 +1,73 @@
+﻿@page
+@model ExternalLoginsModel
+@{
+    ViewData["Title"] = "Manage your external logins";
+    ViewData["ActivePage"] = ManageNavPages.ExternalLogins;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="mb-4">
+    <h2 class="mb-3">@ViewData["Title"]</h2>
+    <p class="text-muted">Here you can view or remove external login providers linked to your account.</p>
+</div>
+
+@if (Model.CurrentLogins?.Count > 0)
+{
+    <div class="card shadow-sm border mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Registered Logins</h5>
+            <table class="table table-hover align-middle">
+                <tbody>
+                    @foreach (var login in Model.CurrentLogins)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@login.ProviderDisplayName</strong>
+                            </td>
+                            <td class="text-end">
+                                @if (Model.ShowRemoveButton)
+                                {
+                                    <form asp-page-handler="RemoveLogin" method="post" class="d-inline">
+                                        <input type="hidden" name="LoginProvider" value="@login.LoginProvider" />
+                                        <input type="hidden" name="ProviderKey" value="@login.ProviderKey" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-trash-fill"></i> Remove
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Default login</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (Model.OtherLogins?.Count > 0)
+{
+    <div class="card shadow-sm border">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Link Another Login Provider</h5>
+            <form asp-page-handler="LinkLogin" method="post">
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var provider in Model.OtherLogins)
+                    {
+                        <button type="submit" name="provider" value="@provider.Name" class="btn btn-outline-primary">
+                            <i class="bi bi-box-arrow-in-right"></i> @provider.DisplayName
+                        </button>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

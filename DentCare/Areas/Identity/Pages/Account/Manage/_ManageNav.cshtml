@@ -1,0 +1,40 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+
+<ul class="nav nav-pills flex-column gap-2">
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext) text-start" id="profile" asp-page="./Index">
+            <i class="bi bi-person"></i> Profile
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext) text-start" id="email" asp-page="./Email">
+            <i class="bi bi-envelope"></i> Email
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext) text-start" id="change-password" asp-page="./ChangePassword">
+            <i class="bi bi-key"></i> Password
+        </a>
+    </li>
+    @if (hasExternalLogins)
+    {
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext) text-start" id="external-login" asp-page="./ExternalLogins">
+                <i class="bi bi-box-arrow-in-right"></i> External Logins
+            </a>
+        </li>
+    }
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext) text-start" id="two-factor" asp-page="./TwoFactorAuthentication">
+            <i class="bi bi-shield-lock"></i> Two-Factor Auth
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext) text-start" id="personal-data" asp-page="./PersonalData">
+            <i class="bi bi-file-earmark-person"></i> Personal Data
+        </a>
+    </li>
+</ul>

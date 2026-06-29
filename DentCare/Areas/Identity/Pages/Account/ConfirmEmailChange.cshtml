@@ -1,0 +1,50 @@
+﻿@page
+@model ConfirmEmailChangeModel
+@{
+    ViewData["Title"] = "Confirm Email Change";
+}
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #fdfcf9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .confirmation-container {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+    }
+
+        .confirmation-container h1 {
+            color: #3498db;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+    .confirmation-icon {
+        font-size: 60px;
+        color: #3498db;
+        margin-bottom: 15px;
+    }
+
+    .alert {
+        margin-top: 15px;
+        font-size: 1.05rem;
+    }
+</style>
+
+<div class="confirmation-container">
+    <div class="confirmation-icon">📧</div>
+    <h1>@ViewData["Title"]</h1>
+    <partial name="_StatusMessage" model="Model.StatusMessage" />
+</div>

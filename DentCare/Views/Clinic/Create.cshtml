@@ -1,0 +1,74 @@
+﻿@model Models.Clinic
+@{
+    ViewData["Title"] = "Register Clinic";
+}
+
+<div class="glass-card col-lg-8 mx-auto">
+    <h2 class="glass-title"><i class="bi bi-plus-square me-2"></i>Register New Clinic Branch</h2>
+    <p class="text-muted small">Input exact branch info. Logo extension must match standard image schemas.</p>
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data" class="mt-4">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label text-light small fw-bold">Clinic Name</label>
+                <input asp-for="Name" class="form-control glass-input" placeholder="e.g. DentCare Downtown" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            
+            <div class="col-md-6">
+                <label asp-for="Phone" class="form-label text-light small fw-bold">Phone Number</label>
+                <input asp-for="Phone" class="form-control glass-input" placeholder="e.g. +201..." />
+                <span asp-validation-for="Phone" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Address" class="form-label text-light small fw-bold">Address Details</label>
+                <input asp-for="Address" class="form-control glass-input" placeholder="Street, City, Floor" />
+                <span asp-validation-for="Address" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Email" class="form-label text-light small fw-bold">Official Email (Optional)</label>
+                <input asp-for="Email" class="form-control glass-input" placeholder="branch@@dentcare.com" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="SubscriptionPlan" class="form-label text-light small fw-bold">Subscription Plan</label>
+                <select asp-for="SubscriptionPlan" class="form-select glass-input">
+                    <option value="Basic">Basic Plan</option>
+                    <option value="Premium">Premium Plan</option>
+                    <option value="Enterprise">Enterprise Plan</option>
+                </select>
+                <span asp-validation-for="SubscriptionPlan" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="WorkingHours" class="form-label text-light small fw-bold">Working Shifts</label>
+                <input asp-for="WorkingHours" class="form-control glass-input" placeholder="e.g. 09:00 AM - 10:00 PM" />
+                <span asp-validation-for="WorkingHours" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label text-light small fw-bold">Upload Logo (JPG, PNG, WEBP)</label>
+                <input type="file" name="logoUrl" class="form-control glass-input" accept=".jpg,.jpeg,.png,.webp" />
+                <span class="text-danger small" data-valmsg-for="Logo"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="Description" class="form-label text-light small fw-bold">Branch Description</label>
+                <textarea asp-for="Description" rows="3" class="form-control" style="background-color: rgba(3, 10, 16, 0.75); border: 1px solid rgba(0, 229, 255, 0.35); color: #fff;" placeholder="Specialized medical devices, staff counts, etc..."></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-neon-cyan px-4 py-2">Save Record</button>
+            <a asp-action="Index" class="btn btn-neon-cancel px-4 py-2">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

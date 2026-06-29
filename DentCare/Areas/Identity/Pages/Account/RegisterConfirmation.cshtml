@@ -1,0 +1,64 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register Confirmation";
+}
+
+<style>
+    .fancy-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+        .fancy-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+    .fancy-btn {
+        transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+        .fancy-btn:hover {
+            transform: scale(1.05);
+            background-color: #0d6efd !important;
+            color: #fff !important;
+        }
+
+    a.fancy-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.5);
+    }
+</style>
+
+<main class="container mt-5 text-center text-light">
+    <h1 class="display-4 fw-bold mb-5 animate__animated animate__fadeIn">@ViewData["Title"]</h1>
+
+    @if (Model.DisplayConfirmAccountLink)
+    {
+        <div class="p-5 rounded-4 shadow-lg border border-light-subtle bg-dark bg-opacity-50 fancy-card animate__animated animate__fadeInUp">
+            <p class="mb-4 fs-5 text-warning d-flex justify-content-center align-items-center gap-2">
+                ⚠️ This app does not currently have a real email sender registered.
+                See <a href="https://aka.ms/aspaccountconf"
+                       class="link-info fw-semibold text-decoration-underline"
+                       target="_blank">these docs</a> for how to configure one.
+            </p>
+            <p class="mb-0">
+                <span class="text-muted d-block mb-2">Normally this would be emailed:</span>
+                <a id="confirm-link"
+                   href="@Model.EmailConfirmationUrl"
+                   class="btn btn-outline-light btn-lg mt-2 px-5 py-2 rounded-pill fw-bold shadow-sm fancy-btn">
+                    ✅ Confirm Your Account
+                </a>
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="p-5 rounded-4 shadow-lg border border-success-subtle bg-success bg-opacity-10 fancy-card animate__animated animate__fadeInUp">
+            <p class="fs-5 text-success-emphasis mb-0">
+                📬 Please check your email to confirm your account.
+            </p>
+        </div>
+    }
+</main>

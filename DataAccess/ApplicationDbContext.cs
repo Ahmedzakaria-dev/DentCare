@@ -36,6 +36,12 @@ namespace DataAccess.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.Clinic)
+                .WithMany(c => c.Users)
+                .HasForeignKey(u => u.ClinicId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Doctor>()
                 .HasOne(d => d.User)
                 .WithOne(u => u.Doctor)
@@ -72,7 +78,6 @@ namespace DataAccess.Data
                 .HasForeignKey(m => m.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // حل مشكلة جدول الروشتات (Prescriptions) الحالية منعاً للتداخل
             builder.Entity<Prescription>()
                 .HasOne(p => p.Doctor)
                 .WithMany(d => d.Prescriptions)

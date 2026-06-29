@@ -1,0 +1,27 @@
+﻿@model Models.Clinic
+@{
+    ViewData["Title"] = "Confirm Delete";
+}
+
+<div class="glass-card col-lg-6 mx-auto text-center" style="border-color: rgba(231, 76, 60, 0.4) !important;">
+    <div class="text-danger mb-3" style="font-size: 4rem;">
+        <i class="bi bi-exclamation-octagon-fill" style="filter: drop-shadow(0 0 10px rgba(231,76,60,0.4));"></i>
+    </div>
+    
+    <h2 class="text-danger font-weight-bold mb-2">Are you absolutely sure?</h2>
+    <p class="text-muted small px-3">You are about to purge this clinic branch database logging records. This transaction cannot be reverted easily.</p>
+
+    <div class="my-4 p-3 rounded" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05);">
+        <h4 class="text-white font-weight-bold mb-1">@Model.Name</h4>
+        <p class="text-muted small mb-0"><i class="bi bi-geo-alt me-1"></i>@Model.Address</p>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="id" value="@Model.ClinicId" />
+        
+        <div class="d-flex justify-content-center gap-2 mt-4">
+            <button type="submit" class="btn btn-neon-danger px-4 py-2">Confirm & Delete</button>
+            <a asp-action="Index" class="btn btn-neon-cancel px-4 py-2">Back to Safety</a>
+        </div>
+    </form>
+</div>
